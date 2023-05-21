@@ -1,13 +1,15 @@
 import ComposableSecurities from "./views/ComposableSecurities";
+import Navbar from "./views/Navbar";
 import Splash from "./views/Splash";
-import TradeableEntities from "./views/TradeableEntities";
+import TokenizableEntities from "./views/TokenizableEntities";
 
 export const App = () => {
   return (
     <>
+      <Navbar />
       <Splash />
+      <TokenizableEntities />
       <ComposableSecurities />
-      <TradeableEntities />
     </>
   );
 };

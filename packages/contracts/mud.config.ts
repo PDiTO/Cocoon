@@ -7,15 +7,30 @@ export default mudConfig({
       schema: "uint32",
     },
 
-    SecurityCounter: {
+    // General
+    OwnerTable: {
+      keySchema: { token: "uint256" },
+      schema: { owner: "address" },
+    },
+
+    // Tokenized Components
+
+    TokenCounter: {
       keySchema: {},
       schema: "uint256",
     },
 
+    Owner: {
+      keySchema: { tokenId: "uint256" },
+      schema: { owner: "address" },
+    },
+
     Locked: {
-      keySchema: {},
+      keySchema: { tokenId: "uint256" },
       schema: "bool",
     },
+
+    // Composable Securities
 
     Future: {
       keySchema: {},

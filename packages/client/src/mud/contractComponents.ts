@@ -20,12 +20,42 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    SecurityCounter: (() => {
-      const tableId = new TableId("", "SecurityCounter");
+    OwnerTable: (() => {
+      const tableId = new TableId("", "OwnerTable");
+      return defineComponent(
+        world,
+        {
+          owner: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    TokenCounter: (() => {
+      const tableId = new TableId("", "TokenCounter");
       return defineComponent(
         world,
         {
           value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Owner: (() => {
+      const tableId = new TableId("", "Owner");
+      return defineComponent(
+        world,
+        {
+          owner: RecsType.String,
         },
         {
           metadata: {
