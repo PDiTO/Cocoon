@@ -20,12 +20,13 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    OwnerTable: (() => {
-      const tableId = new TableId("", "OwnerTable");
+    Character: (() => {
+      const tableId = new TableId("", "Character");
       return defineComponent(
         world,
         {
           owner: RecsType.String,
+          created: RecsType.BigInt,
         },
         {
           metadata: {
@@ -35,12 +36,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    TokenCounter: (() => {
-      const tableId = new TableId("", "TokenCounter");
+    Strength: (() => {
+      const tableId = new TableId("", "Strength");
       return defineComponent(
         world,
         {
-          value: RecsType.BigInt,
+          value: RecsType.Number,
         },
         {
           metadata: {
@@ -50,12 +51,42 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Owner: (() => {
-      const tableId = new TableId("", "Owner");
+    Intelligence: (() => {
+      const tableId = new TableId("", "Intelligence");
       return defineComponent(
         world,
         {
-          owner: RecsType.String,
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Zen: (() => {
+      const tableId = new TableId("", "Zen");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Base: (() => {
+      const tableId = new TableId("", "Base");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
         },
         {
           metadata: {
@@ -80,12 +111,27 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Factory: (() => {
+      const tableId = new TableId("", "Factory");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     Future: (() => {
       const tableId = new TableId("", "Future");
       return defineComponent(
         world,
         {
-          is: RecsType.Boolean,
+          exists: RecsType.Boolean,
           expiry: RecsType.BigInt,
         },
         {
@@ -101,7 +147,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          is: RecsType.Boolean,
+          exists: RecsType.Boolean,
           rate: RecsType.BigInt,
           index: RecsType.String,
           margin: RecsType.BigInt,
@@ -120,7 +166,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          is: RecsType.Boolean,
+          exists: RecsType.Boolean,
           strike: RecsType.BigInt,
           expiry: RecsType.BigInt,
         },

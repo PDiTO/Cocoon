@@ -7,35 +7,29 @@ export default mudConfig({
       schema: "uint32",
     },
 
-    // General
-    OwnerTable: {
-      keySchema: { token: "uint256" },
-      schema: { owner: "address" },
+    // Character Example
+    Character: {
+      schema: {
+        owner: "address",
+        created: "uint256",
+      },
     },
 
-    // Tokenized Components
+    Strength: "uint8",
+    Intelligence: "uint8",
+    Zen: "uint8",
+    Base: "uint8",
 
-    TokenCounter: {
-      keySchema: {},
-      schema: "uint256",
-    },
-
-    Owner: {
-      keySchema: { tokenId: "uint256" },
-      schema: { owner: "address" },
-    },
-
-    Locked: {
-      keySchema: { tokenId: "uint256" },
-      schema: "bool",
-    },
+    // Tokenize
+    Locked: "bool",
+    Factory: { keySchema: {}, schema: "address" },
 
     // Composable Securities
 
     Future: {
       keySchema: {},
       schema: {
-        is: "bool",
+        exists: "bool",
         expiry: "uint256",
       },
     },
@@ -43,7 +37,7 @@ export default mudConfig({
     Swap: {
       keySchema: {},
       schema: {
-        is: "bool",
+        exists: "bool",
         rate: "uint256",
         index: "address",
         margin: "uint256",
@@ -54,10 +48,11 @@ export default mudConfig({
     Option: {
       keySchema: {},
       schema: {
-        is: "bool",
+        exists: "bool",
         strike: "uint256",
         expiry: "uint256",
       },
     },
   },
+  modules: [{ name: "UniqueEntityModule", root: true, args: [] }],
 });

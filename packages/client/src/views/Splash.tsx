@@ -7,7 +7,7 @@ const Splash = () => {
   return (
     <section id="splash">
       <div className="flex flex-col justify-center items-center h-screen">
-        <img className="object-cover w-32 rotate-12" src={cocoon} />
+        <img className="object-cover w-20 rotate-12" src={cocoon} />
         <h1 className="text-white text-8xl font-thin">Cocoon</h1>
         <p className="text-white text-xl font-thin">
           tokenizable entities, composable securities

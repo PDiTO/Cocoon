@@ -5,6 +5,10 @@ import { SetupNetworkResult } from "./setupNetwork";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
+const entityToBytes32 = (entity: string) => {
+  return "0x" + entity.replace("0x", "").padStart(64, "0");
+};
+
 export function createSystemCalls(
   { worldSend, txReduced$, singletonEntity }: SetupNetworkResult,
   { Counter }: ClientComponents
@@ -15,7 +19,25 @@ export function createSystemCalls(
     return getComponentValue(Counter, singletonEntity);
   };
 
+  const createCharacter = async () => {
+    const tx = await worldSend("createCharacter", []);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+  };
+
+  const tokenizeEntity = async (id: string, uri: string) => {
+    const tx = await worldSend("tokenizeEntity", [entityToBytes32(id), uri]);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+  };
+
+  const redeemEntity = async (tokenId: number) => {
+    const tx = await worldSend("redeemEntity", [tokenId]);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+  };
+
   return {
     increment,
+    createCharacter,
+    tokenizeEntity,
+    redeemEntity,
   };
 }

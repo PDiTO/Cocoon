@@ -28,12 +28,12 @@ export default function Navbar() {
     <div>
       <div className="fixed top-0 left-0 z-50 w-full">
         <div
-          className="flex flex-row cursor-pointer px-4 py-4 items-center"
+          className="flex flex-row cursor-pointer px-4 py-4 items-end"
           //style={{ opacity: logoOpacity }}
           onClick={handleClick}
         >
-          <img className="object-cover w-8 rotate-12" src={cocoon} />
-          <h1 className="text-white text-xl">Cocoon</h1>
+          <img className="object-cover w-6 rotate-12" src={cocoon} />
+          <h1 className="text-white text-xl pl-1">Cocoon</h1>
         </div>
       </div>
     </div>

@@ -4,6 +4,10 @@ pragma solidity >=0.8.0;
 import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 import { IWorld } from "../src/codegen/world/IWorld.sol";
+import { Factory } from "../src/codegen/tables/Factory.sol";
+
+// Custom
+import "../src/MUDToken.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -13,11 +17,12 @@ contract PostDeploy is Script {
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
-    // ------------------ EXAMPLES ------------------
+    // Deploy and then set NFT contract here using a system address
+    MUDToken mudToken = new MUDToken("","", worldAddress);
 
-    // Call increment on the world via the registered function selector
-    uint32 newValue = IWorld(worldAddress).increment();
-    console.log("Increment via IWorld:", newValue);
+    // Store address
+    IWorld world = IWorld(worldAddress);
+    Factory.set(world, address(mudToken));
 
     vm.stopBroadcast();
   }

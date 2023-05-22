@@ -25,10 +25,12 @@
     "@wagmi/chains": "^0.2.22",
     "contracts": "workspace:*",
     "ethers": "^5.7.2",
+    "nft.storage": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/mime": "^3.0.1",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "@vitejs/plugin-react": "^3.1.0",
