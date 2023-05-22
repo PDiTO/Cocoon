@@ -18,6 +18,7 @@ export default mudConfig({
     Strength: "uint8",
     Intelligence: "uint8",
     Zen: "uint8",
+    Special: "string",
     Base: "uint8",
 
     // Tokenize

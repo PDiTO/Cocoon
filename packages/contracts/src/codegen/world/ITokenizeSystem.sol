@@ -8,5 +8,5 @@ interface ITokenizeSystem {
 
   function redeemEntity(uint256 _tokenId) external;
 
-  function claimToken(uint256 _tokenId) external;
+  function worldTransferToken(uint256 _tokenId, address _to) external;
 }

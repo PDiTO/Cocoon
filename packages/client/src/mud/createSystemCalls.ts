@@ -2,6 +2,7 @@ import { getComponentValue } from "@latticexyz/recs";
 import { awaitStreamValue } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
+import { BigNumber } from "ethers";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -34,10 +35,16 @@ export function createSystemCalls(
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
   };
 
+  const worldTransferToken = async (tokenId: BigNumber, to: string) => {
+    const tx = await worldSend("worldTransferToken", [tokenId, to]);
+    // await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+  };
+
   return {
     increment,
     createCharacter,
     tokenizeEntity,
     redeemEntity,
+    worldTransferToken,
   };
 }

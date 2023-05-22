@@ -5,8 +5,8 @@ import {
   getEntityComponents,
 } from "@latticexyz/recs";
 
-export const useGenerateNFTMetadata = () => {
-  const generateMetaData = (
+export const useGetEntityData = () => {
+  const getEntityData = (
     world: World,
     entity: Entity,
     exclude: string[] = []
@@ -21,17 +21,31 @@ export const useGenerateNFTMetadata = () => {
 
         if (componentValue && !exclude.includes(componentName)) {
           return {
-            trait_type: componentName as string,
-            value: componentValue as number,
+            name: componentName as string,
+            value: componentValue,
           };
         }
       })
-      .filter((component): component is { trait_type: string; value: number } =>
-        Boolean(component)
+      .filter(
+        (
+          component
+        ): component is {
+          name: string;
+          value:
+            | string
+            | number
+            | bigint
+            | true
+            | Entity
+            | string[]
+            | number[]
+            | bigint[]
+            | Entity[];
+        } => Boolean(component)
       );
 
     return componentData;
   };
 
-  return { generateMetaData };
+  return { getEntityData };
 };

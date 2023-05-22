@@ -8,6 +8,7 @@ import { Character, CharacterData, CharacterTableId } from "./tables/Character.s
 import { Strength, StrengthTableId } from "./tables/Strength.sol";
 import { Intelligence, IntelligenceTableId } from "./tables/Intelligence.sol";
 import { Zen, ZenTableId } from "./tables/Zen.sol";
+import { Special, SpecialTableId } from "./tables/Special.sol";
 import { Base, BaseTableId } from "./tables/Base.sol";
 import { Locked, LockedTableId } from "./tables/Locked.sol";
 import { Factory, FactoryTableId } from "./tables/Factory.sol";

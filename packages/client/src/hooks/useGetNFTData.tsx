@@ -1,6 +1,6 @@
 import { Provider } from "@ethersproject/providers";
 import { NetworkConfig } from "@latticexyz/network";
-import { Signer, ethers } from "ethers";
+import { BigNumber, Signer, ethers } from "ethers";
 
 import abi from "../../../contracts/out/MUDToken.sol/MUDToken.abi.json";
 
@@ -10,7 +10,9 @@ export const useGetNFTData = (
   provider: Signer | Provider | undefined
 ) => {
   async function getOwnedTokens() {
-    if (!factoryAddress) return;
+    if (!factoryAddress) {
+      return;
+    }
 
     const contract = new ethers.Contract(factoryAddress, abi, provider);
 
@@ -24,8 +26,19 @@ export const useGetNFTData = (
       const tokenUri = await contract.tokenURI(tokenId);
       ownedTokens.push({ id: tokenId, uri: tokenUri });
     }
+
     return ownedTokens;
   }
 
-  return { getOwnedTokens };
+  async function transferToken(tokenId: BigNumber, to: string) {
+    if (!factoryAddress || !provider) return;
+
+    console.log("TX", tokenId.toNumber(), to);
+    const contract = new ethers.Contract(factoryAddress, abi, provider);
+
+    const transaction = await contract.transferFrom(playerAddress, to, tokenId);
+    await transaction.wait();
+  }
+
+  return { getOwnedTokens, transferToken };
 };

@@ -23,12 +23,14 @@ contract MUDToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
         return "";
     }
 
-    function mint(address to, string memory uri)
+    function mint(address _to, bytes32 _entityId, string memory _uri)
         public onlyOwner() returns (uint256)
     {
         tokenCounter++;
-        _safeMint(to, tokenCounter);
-        _setTokenURI(tokenCounter, uri);
+        _safeMint(_to, tokenCounter);
+        _setTokenURI(tokenCounter, _uri);
+
+        tokenToEntity[tokenCounter] = _entityId;
 
         return tokenCounter;
     }
@@ -38,6 +40,11 @@ contract MUDToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
         _burn(_tokenId);
         entityId = tokenToEntity[_tokenId];
         delete tokenToEntity[_tokenId];
+    }
+
+    function worldTransfer(address _from, address _to, uint256 _tokenId) public onlyOwner() {
+        require(ownerOf(_tokenId) == _from, "Not token owner");
+        _transfer(_from, _to, _tokenId);
     }
 
     // The following functions are overrides required by Solidity.

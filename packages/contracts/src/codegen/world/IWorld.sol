@@ -15,5 +15,5 @@ import { ITradeSystem } from "./ITradeSystem.sol";
  * during the deploy process.
  */
 interface IWorld is IBaseWorld, IDemoEntitySystem, IIncrementSystem, ITokenizeSystem, ITradeSystem {
-    //event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
+
 }
