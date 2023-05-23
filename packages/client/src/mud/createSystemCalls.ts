@@ -1,6 +1,4 @@
-import { getComponentValue } from "@latticexyz/recs";
 import { awaitStreamValue } from "@latticexyz/utils";
-import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import { BigNumber } from "ethers";
 
@@ -10,12 +8,18 @@ const entityToBytes32 = (entity: string) => {
   return "0x" + entity.replace("0x", "").padStart(64, "0");
 };
 
-export function createSystemCalls(
-  { worldSend, txReduced$, singletonEntity }: SetupNetworkResult,
-  { Counter }: ClientComponents
-) {
+export function createSystemCalls({
+  worldSend,
+  txReduced$,
+  singletonEntity,
+}: SetupNetworkResult) {
   const createCharacter = async () => {
     const tx = await worldSend("createCharacter", []);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+  };
+
+  const createCharacterSec = async () => {
+    const tx = await worldSend("createCharacterSec", []);
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
   };
 
@@ -34,10 +38,34 @@ export function createSystemCalls(
     // await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
   };
 
+  const generateCompleteSecurity = async (
+    underlyingId: string,
+    principal: number,
+    price: number,
+    floatRate: number,
+    fixedRate: number,
+    expiry: number,
+    frequency: number,
+    strike: number
+  ) => {
+    const tx = await worldSend("generateCompleteSecurity", [
+      entityToBytes32(underlyingId),
+      principal,
+      price,
+      floatRate,
+      fixedRate,
+      expiry,
+      frequency,
+      strike,
+    ]);
+  };
+
   return {
     createCharacter,
+    createCharacterSec,
     tokenizeEntity,
     redeemEntity,
     worldTransferToken,
+    generateCompleteSecurity,
   };
 }

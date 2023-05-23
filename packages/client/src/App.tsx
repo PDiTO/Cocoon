@@ -1,3 +1,4 @@
+import AndBeyond from "./views/AndBeyond";
 import ComposableSecurities from "./views/ComposableSecurities";
 import Navbar from "./views/Navbar";
 import Splash from "./views/Splash";
@@ -10,6 +11,7 @@ export const App = () => {
       <Splash />
       <TokenizableEntities />
       <ComposableSecurities />
+      <AndBeyond />
     </>
   );
 };

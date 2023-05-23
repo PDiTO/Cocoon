@@ -5,12 +5,13 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
-    Counter: (() => {
-      const tableId = new TableId("", "Counter");
+    Character: (() => {
+      const tableId = new TableId("", "Character");
       return defineComponent(
         world,
         {
-          value: RecsType.Number,
+          owner: RecsType.String,
+          created: RecsType.BigInt,
         },
         {
           metadata: {
@@ -20,8 +21,8 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Character: (() => {
-      const tableId = new TableId("", "Character");
+    CharacterSec: (() => {
+      const tableId = new TableId("", "CharacterSec");
       return defineComponent(
         world,
         {
@@ -141,13 +142,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Loan: (() => {
-      const tableId = new TableId("", "Loan");
+    Owner: (() => {
+      const tableId = new TableId("", "Owner");
       return defineComponent(
         world,
         {
-          rate: RecsType.BigInt,
-          expiry: RecsType.BigInt,
+          value: RecsType.String,
         },
         {
           metadata: {
@@ -157,13 +157,14 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Future: (() => {
-      const tableId = new TableId("", "Future");
+    Security: (() => {
+      const tableId = new TableId("", "Security");
       return defineComponent(
         world,
         {
-          price: RecsType.BigInt,
-          expiry: RecsType.BigInt,
+          underlying: RecsType.String,
+          writer: RecsType.String,
+          holder: RecsType.String,
         },
         {
           metadata: {
@@ -173,15 +174,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Swap: (() => {
-      const tableId = new TableId("", "Swap");
+    Collateral: (() => {
+      const tableId = new TableId("", "Collateral");
       return defineComponent(
         world,
         {
-          rate: RecsType.BigInt,
-          index: RecsType.String,
-          margin: RecsType.BigInt,
-          expiry: RecsType.BigInt,
+          value: RecsType.Boolean,
         },
         {
           metadata: {
@@ -191,13 +189,147 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Option: (() => {
-      const tableId = new TableId("", "Option");
+    Committed: (() => {
+      const tableId = new TableId("", "Committed");
       return defineComponent(
         world,
         {
-          strike: RecsType.BigInt,
-          expiry: RecsType.BigInt,
+          value: RecsType.Boolean,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Held: (() => {
+      const tableId = new TableId("", "Held");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Boolean,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Principal: (() => {
+      const tableId = new TableId("", "Principal");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    FixedRate: (() => {
+      const tableId = new TableId("", "FixedRate");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    FloatingRate: (() => {
+      const tableId = new TableId("", "FloatingRate");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Expiry: (() => {
+      const tableId = new TableId("", "Expiry");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Price: (() => {
+      const tableId = new TableId("", "Price");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Strike: (() => {
+      const tableId = new TableId("", "Strike");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Frequency: (() => {
+      const tableId = new TableId("", "Frequency");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    FrequencyLastPaid: (() => {
+      const tableId = new TableId("", "FrequencyLastPai");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
         },
         {
           metadata: {

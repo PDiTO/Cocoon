@@ -16,6 +16,8 @@ import { useGetNFTData } from "../hooks/useGetNFTData";
 import EntityCard from "./components/EntityCard";
 import EntityList from "./components/EntityList";
 import TokenCard from "./components/TokenCard";
+import SecurityComposeCard from "./components/SecurityComposeCard";
+import SecurityConfigureCard from "./components/SecurityConfigureCard";
 
 const ComposableSecurities = () => {
   // State
@@ -23,34 +25,45 @@ const ComposableSecurities = () => {
     undefined
   );
 
-  // Setup hooks
+  // Principle
+  const [principal, setPrincipal] = useState(false);
+  const [principalVal, setPrincipalVal] = useState("0");
+
+  // Price
+  const [price, setPrice] = useState(false);
+  const [priceVal, setPriceVal] = useState("0");
+
+  // Fixed Rate
+  const [fxdRate, setFxdRate] = useState(false);
+  const [fxdRateVal, setFxdRateVal] = useState("0");
+
+  // Float Rate
+  const [fltRate, setFltRate] = useState(false);
+  const [fltRateVal, setFltRateVal] = useState("0");
+
+  // Expiry
+  const [expiry, setExpiry] = useState(false);
+  const [expiryVal, setExpiryVal] = useState("0");
+
+  // Frequency
+  const [frequency, setFrequency] = useState(false);
+  const [frequencyVal, setFrequencyVal] = useState("0");
+
+  // Strike
+  const [strike, setStrike] = useState(false);
+  const [strikeVal, setStrikeVal] = useState("0");
+
   const {
-    network: { playerEntity, world, network: networkNested, singletonEntity },
-    systemCalls: { createCharacter, tokenizeEntity, redeemEntity },
-    components: {
-      Character,
-      Strength,
-      Intelligence,
-      Zen,
-      Base,
-      Locked,
-      Factory,
-    },
+    network: { playerEntity },
+    components: { CharacterSec },
   } = useMUD();
 
-  const factoryAddress = getComponentValue(Factory, singletonEntity);
-  const { getOwnedTokens } = useGetNFTData(
-    playerEntity as string,
-    factoryAddress?.value,
-    networkNested.signer.get()
-  );
-
   // Get characters owned by players
-  const characters = useEntityQuery([Has(Character)])
+  const characters = useEntityQuery([Has(CharacterSec)])
     .map((entity) => {
       return {
         entity: entity,
-        character: getComponentValueStrict(Character, entity),
+        character: getComponentValueStrict(CharacterSec, entity),
       };
     })
     .filter((character) => {
@@ -61,29 +74,71 @@ const ComposableSecurities = () => {
     });
 
   return (
-    <section id="tokenize">
+    <section id="compose">
       <div className="flex flex-col  justify-center items-center h-screen text-white">
-        <h1 className="text-4xl font-thin py-8">Composable Securities Demo</h1>
+        <h1 className="text-4xl font-thin pb-10">Composable Securities Demo</h1>
         <div className="grid grid-flow-row md:grid-cols-3 gap-8 items-center">
-          <div className="col-span-1 text-center">A</div>
-          <div className="col-span-1 text-center">B</div>
-          <div className="col-span-1 text-center">C</div>
-        </div>
-        <div>
-          <p className="font-thin text-xl pt-8">
-            1. Added components need not to be limited to
-          </p>
-          <p className="font-thin text-xl pt-2">
-            2. Create custom securities by a set of properties you define.
-          </p>
-          <p className="font-thin text-xl pt-2">
-            3. Trade the ERC721 as you would any other token, on marketplaces
-            such as Opensea or Blur
-          </p>
-          <p className="font-thin text-xl pt-2">
-            4. The token owner can burn the ERC721 to unlock the MUD entity and
-            redeem it into their own account
-          </p>
+          <div className="col-span-1 text-center">
+            <EntityList
+              entities={characters}
+              selectedIndex={selectedEntity}
+              onEntitySelected={setSelectedEntity}
+              secDemo={true}
+            />
+          </div>
+          <div className="col-span-1 text-center">
+            <SecurityComposeCard
+              entity={
+                selectedEntity !== undefined
+                  ? characters[selectedEntity]
+                  : undefined
+              }
+              principal={principal}
+              setPrincipal={setPrincipal}
+              price={price}
+              setPrice={setPrice}
+              fxdRate={fxdRate}
+              setFxdRate={setFxdRate}
+              fltRate={fltRate}
+              setFltRate={setFltRate}
+              expiry={expiry}
+              setExpiry={setExpiry}
+              frequency={frequency}
+              setFrequency={setFrequency}
+              strike={strike}
+              setStrike={setStrike}
+            />
+          </div>
+          <div className="col-span-1 text-center">
+            <SecurityConfigureCard
+              entity={
+                selectedEntity !== undefined
+                  ? characters[selectedEntity]
+                  : undefined
+              }
+              principal={principal}
+              principalVal={principalVal}
+              setPrincipalVal={setPrincipalVal}
+              price={price}
+              priceVal={priceVal}
+              setPriceVal={setPriceVal}
+              fxdRate={fxdRate}
+              fxdRateVal={fxdRateVal}
+              setFxdRateVal={setFxdRateVal}
+              fltRate={fltRate}
+              fltRateVal={fltRateVal}
+              setFltRateVal={setFltRateVal}
+              expiry={expiry}
+              expiryVal={expiryVal}
+              setExpiryVal={setExpiryVal}
+              frequency={frequency}
+              frequencyVal={frequencyVal}
+              setFrequencyVal={setFrequencyVal}
+              strike={strike}
+              strikeVal={strikeVal}
+              setStrikeVal={setStrikeVal}
+            />
+          </div>
         </div>
       </div>
     </section>

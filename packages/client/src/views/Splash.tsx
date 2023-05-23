@@ -24,7 +24,7 @@ const Splash = () => {
         </div>
 
         <div className="mt-6">
-          <div className="grid gap-8 grid-cols-2 justify-center items-center">
+          <div className="grid gap-8 grid-cols-3 justify-center items-center">
             <ScrollButton
               buttonText="Tokenize Demo"
               sectionId="tokenize"
@@ -33,6 +33,11 @@ const Splash = () => {
             <ScrollButton
               buttonText="Compose Demo"
               sectionId="compose"
+              buttonStyles="outline outline-1 text-white font-sm  font-thin my-4 py-2 px-4 rounded-lg uppercase hover:bg-white hover:text-slate-700 hover:outline-white"
+            />
+            <ScrollButton
+              buttonText="And Beyond"
+              sectionId="beyond"
               buttonStyles="outline outline-1 text-white font-sm  font-thin my-4 py-2 px-4 rounded-lg uppercase hover:bg-white hover:text-slate-700 hover:outline-white"
             />
           </div>

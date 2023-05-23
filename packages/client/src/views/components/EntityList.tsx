@@ -6,23 +6,29 @@ type TEntityList = {
   entities: Entity[];
   selectedIndex: number | undefined;
   onEntitySelected: (index: number) => void;
+  secDemo?: boolean;
 };
 
 const EntityList = ({
   entities,
   selectedIndex,
   onEntitySelected,
+  secDemo,
 }: TEntityList) => {
   const [busy, setBusy] = useState(false);
 
   const {
-    systemCalls: { createCharacter },
+    systemCalls: { createCharacter, createCharacterSec },
     components: {},
   } = useMUD();
 
   const generateNew = async () => {
     setBusy(true);
-    await createCharacter();
+    if (secDemo) {
+      await createCharacterSec();
+    } else {
+      await createCharacter();
+    }
     setBusy(false);
   };
 

@@ -25,17 +25,8 @@ const TokenizableEntities = () => {
 
   // Setup hooks
   const {
-    network: { playerEntity, world, network: networkNested, singletonEntity },
-    systemCalls: { createCharacter, tokenizeEntity, redeemEntity },
-    components: {
-      Character,
-      Strength,
-      Intelligence,
-      Zen,
-      Base,
-      Locked,
-      Factory,
-    },
+    network: { playerEntity, network: networkNested, singletonEntity },
+    components: { Character, Factory },
   } = useMUD();
 
   const factoryAddress = getComponentValue(Factory, singletonEntity);
@@ -63,7 +54,7 @@ const TokenizableEntities = () => {
   return (
     <section id="tokenize">
       <div className="flex flex-col  justify-center items-center h-screen text-white">
-        <h1 className="text-4xl font-thin py-8">Tokenizable Entities Demo</h1>
+        <h1 className="text-4xl font-thin pb-12">Tokenizable Entities Demo</h1>
         <div className="grid grid-flow-row md:grid-cols-3 gap-8 items-center">
           <div className="col-span-1 text-center">
             <EntityList
@@ -85,7 +76,7 @@ const TokenizableEntities = () => {
             <TokenCard />
           </div>
         </div>
-        <div>
+        {/* <div>
           <p className="font-thin text-xl pt-8">
             1. Select any MUD entity, for example an in-game character
           </p>
@@ -101,7 +92,7 @@ const TokenizableEntities = () => {
             4. The token owner can burn the ERC721 to unlock the MUD entity,
             redeeming it into their own account
           </p>
-        </div>
+        </div> */}
       </div>
     </section>
   );

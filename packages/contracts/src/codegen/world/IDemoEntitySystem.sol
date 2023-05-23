@@ -5,4 +5,6 @@ pragma solidity >=0.8.0;
 
 interface IDemoEntitySystem {
   function createCharacter() external returns (bytes32 id);
+
+  function createCharacterSec() external returns (bytes32 id);
 }
