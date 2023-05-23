@@ -141,12 +141,28 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Loan: (() => {
+      const tableId = new TableId("", "Loan");
+      return defineComponent(
+        world,
+        {
+          rate: RecsType.BigInt,
+          expiry: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     Future: (() => {
       const tableId = new TableId("", "Future");
       return defineComponent(
         world,
         {
-          exists: RecsType.Boolean,
+          price: RecsType.BigInt,
           expiry: RecsType.BigInt,
         },
         {
@@ -162,7 +178,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          exists: RecsType.Boolean,
           rate: RecsType.BigInt,
           index: RecsType.String,
           margin: RecsType.BigInt,
@@ -181,7 +196,6 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          exists: RecsType.Boolean,
           strike: RecsType.BigInt,
           expiry: RecsType.BigInt,
         },

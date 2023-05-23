@@ -21,7 +21,7 @@ bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("Futur
 bytes32 constant FutureTableId = _tableId;
 
 struct FutureData {
-  bool exists;
+  uint256 price;
   uint256 expiry;
 }
 
@@ -29,7 +29,7 @@ library Future {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](2);
-    _schema[0] = SchemaType.BOOL;
+    _schema[0] = SchemaType.UINT256;
     _schema[1] = SchemaType.UINT256;
 
     return SchemaLib.encode(_schema);
@@ -44,7 +44,7 @@ library Future {
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
     string[] memory _fieldNames = new string[](2);
-    _fieldNames[0] = "exists";
+    _fieldNames[0] = "price";
     _fieldNames[1] = "expiry";
     return ("Future", _fieldNames);
   }
@@ -71,34 +71,34 @@ library Future {
     _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
-  /** Get exists */
-  function getExists() internal view returns (bool exists) {
+  /** Get price */
+  function getPrice() internal view returns (uint256 price) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
-    return (_toBool(uint8(Bytes.slice1(_blob, 0))));
+    return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Get exists (using the specified store) */
-  function getExists(IStore _store) internal view returns (bool exists) {
+  /** Get price (using the specified store) */
+  function getPrice(IStore _store) internal view returns (uint256 price) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
-    return (_toBool(uint8(Bytes.slice1(_blob, 0))));
+    return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Set exists */
-  function setExists(bool exists) internal {
+  /** Set price */
+  function setPrice(uint256 price) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((exists)));
+    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((price)));
   }
 
-  /** Set exists (using the specified store) */
-  function setExists(IStore _store, bool exists) internal {
+  /** Set price (using the specified store) */
+  function setPrice(IStore _store, uint256 price) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((exists)));
+    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((price)));
   }
 
   /** Get expiry */
@@ -148,8 +148,8 @@ library Future {
   }
 
   /** Set the full data using individual values */
-  function set(bool exists, uint256 expiry) internal {
-    bytes memory _data = encode(exists, expiry);
+  function set(uint256 price, uint256 expiry) internal {
+    bytes memory _data = encode(price, expiry);
 
     bytes32[] memory _keyTuple = new bytes32[](0);
 
@@ -157,8 +157,8 @@ library Future {
   }
 
   /** Set the full data using individual values (using the specified store) */
-  function set(IStore _store, bool exists, uint256 expiry) internal {
-    bytes memory _data = encode(exists, expiry);
+  function set(IStore _store, uint256 price, uint256 expiry) internal {
+    bytes memory _data = encode(price, expiry);
 
     bytes32[] memory _keyTuple = new bytes32[](0);
 
@@ -167,24 +167,24 @@ library Future {
 
   /** Set the full data using the data struct */
   function set(FutureData memory _table) internal {
-    set(_table.exists, _table.expiry);
+    set(_table.price, _table.expiry);
   }
 
   /** Set the full data using the data struct (using the specified store) */
   function set(IStore _store, FutureData memory _table) internal {
-    set(_store, _table.exists, _table.expiry);
+    set(_store, _table.price, _table.expiry);
   }
 
   /** Decode the tightly packed blob using this table's schema */
   function decode(bytes memory _blob) internal pure returns (FutureData memory _table) {
-    _table.exists = (_toBool(uint8(Bytes.slice1(_blob, 0))));
+    _table.price = (uint256(Bytes.slice32(_blob, 0)));
 
-    _table.expiry = (uint256(Bytes.slice32(_blob, 1)));
+    _table.expiry = (uint256(Bytes.slice32(_blob, 32)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(bool exists, uint256 expiry) internal view returns (bytes memory) {
-    return abi.encodePacked(exists, expiry);
+  function encode(uint256 price, uint256 expiry) internal view returns (bytes memory) {
+    return abi.encodePacked(price, expiry);
   }
 
   /** Encode keys as a bytes32 array using this table's schema */
@@ -204,11 +204,5 @@ library Future {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     _store.deleteRecord(_tableId, _keyTuple);
-  }
-}
-
-function _toBool(uint8 value) pure returns (bool result) {
-  assembly {
-    result := value
   }
 }

@@ -14,12 +14,6 @@ export function createSystemCalls(
   { worldSend, txReduced$, singletonEntity }: SetupNetworkResult,
   { Counter }: ClientComponents
 ) {
-  const increment = async () => {
-    const tx = await worldSend("increment", []);
-    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
-    return getComponentValue(Counter, singletonEntity);
-  };
-
   const createCharacter = async () => {
     const tx = await worldSend("createCharacter", []);
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
@@ -41,7 +35,6 @@ export function createSystemCalls(
   };
 
   return {
-    increment,
     createCharacter,
     tokenizeEntity,
     redeemEntity,

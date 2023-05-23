@@ -21,7 +21,6 @@ bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("Optio
 bytes32 constant OptionTableId = _tableId;
 
 struct OptionData {
-  bool exists;
   uint256 strike;
   uint256 expiry;
 }
@@ -29,10 +28,9 @@ struct OptionData {
 library Option {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](3);
-    _schema[0] = SchemaType.BOOL;
+    SchemaType[] memory _schema = new SchemaType[](2);
+    _schema[0] = SchemaType.UINT256;
     _schema[1] = SchemaType.UINT256;
-    _schema[2] = SchemaType.UINT256;
 
     return SchemaLib.encode(_schema);
   }
@@ -45,10 +43,9 @@ library Option {
 
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
-    string[] memory _fieldNames = new string[](3);
-    _fieldNames[0] = "exists";
-    _fieldNames[1] = "strike";
-    _fieldNames[2] = "expiry";
+    string[] memory _fieldNames = new string[](2);
+    _fieldNames[0] = "strike";
+    _fieldNames[1] = "expiry";
     return ("Option", _fieldNames);
   }
 
@@ -74,41 +71,11 @@ library Option {
     _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
-  /** Get exists */
-  function getExists() internal view returns (bool exists) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
-    return (_toBool(uint8(Bytes.slice1(_blob, 0))));
-  }
-
-  /** Get exists (using the specified store) */
-  function getExists(IStore _store) internal view returns (bool exists) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
-    return (_toBool(uint8(Bytes.slice1(_blob, 0))));
-  }
-
-  /** Set exists */
-  function setExists(bool exists) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((exists)));
-  }
-
-  /** Set exists (using the specified store) */
-  function setExists(IStore _store, bool exists) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((exists)));
-  }
-
   /** Get strike */
   function getStrike() internal view returns (uint256 strike) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -116,7 +83,7 @@ library Option {
   function getStrike(IStore _store) internal view returns (uint256 strike) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -124,21 +91,21 @@ library Option {
   function setStrike(uint256 strike) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((strike)));
+    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((strike)));
   }
 
   /** Set strike (using the specified store) */
   function setStrike(IStore _store, uint256 strike) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((strike)));
+    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((strike)));
   }
 
   /** Get expiry */
   function getExpiry() internal view returns (uint256 expiry) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -146,7 +113,7 @@ library Option {
   function getExpiry(IStore _store) internal view returns (uint256 expiry) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -154,14 +121,14 @@ library Option {
   function setExpiry(uint256 expiry) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((expiry)));
+    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((expiry)));
   }
 
   /** Set expiry (using the specified store) */
   function setExpiry(IStore _store, uint256 expiry) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((expiry)));
+    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((expiry)));
   }
 
   /** Get the full data */
@@ -181,8 +148,8 @@ library Option {
   }
 
   /** Set the full data using individual values */
-  function set(bool exists, uint256 strike, uint256 expiry) internal {
-    bytes memory _data = encode(exists, strike, expiry);
+  function set(uint256 strike, uint256 expiry) internal {
+    bytes memory _data = encode(strike, expiry);
 
     bytes32[] memory _keyTuple = new bytes32[](0);
 
@@ -190,8 +157,8 @@ library Option {
   }
 
   /** Set the full data using individual values (using the specified store) */
-  function set(IStore _store, bool exists, uint256 strike, uint256 expiry) internal {
-    bytes memory _data = encode(exists, strike, expiry);
+  function set(IStore _store, uint256 strike, uint256 expiry) internal {
+    bytes memory _data = encode(strike, expiry);
 
     bytes32[] memory _keyTuple = new bytes32[](0);
 
@@ -200,26 +167,24 @@ library Option {
 
   /** Set the full data using the data struct */
   function set(OptionData memory _table) internal {
-    set(_table.exists, _table.strike, _table.expiry);
+    set(_table.strike, _table.expiry);
   }
 
   /** Set the full data using the data struct (using the specified store) */
   function set(IStore _store, OptionData memory _table) internal {
-    set(_store, _table.exists, _table.strike, _table.expiry);
+    set(_store, _table.strike, _table.expiry);
   }
 
   /** Decode the tightly packed blob using this table's schema */
   function decode(bytes memory _blob) internal pure returns (OptionData memory _table) {
-    _table.exists = (_toBool(uint8(Bytes.slice1(_blob, 0))));
+    _table.strike = (uint256(Bytes.slice32(_blob, 0)));
 
-    _table.strike = (uint256(Bytes.slice32(_blob, 1)));
-
-    _table.expiry = (uint256(Bytes.slice32(_blob, 33)));
+    _table.expiry = (uint256(Bytes.slice32(_blob, 32)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(bool exists, uint256 strike, uint256 expiry) internal view returns (bytes memory) {
-    return abi.encodePacked(exists, strike, expiry);
+  function encode(uint256 strike, uint256 expiry) internal view returns (bytes memory) {
+    return abi.encodePacked(strike, expiry);
   }
 
   /** Encode keys as a bytes32 array using this table's schema */
@@ -239,11 +204,5 @@ library Option {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     _store.deleteRecord(_tableId, _keyTuple);
-  }
-}
-
-function _toBool(uint8 value) pure returns (bool result) {
-  assembly {
-    result := value
   }
 }

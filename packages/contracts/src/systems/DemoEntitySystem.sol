@@ -7,7 +7,7 @@ import { Character, CharacterData, Strength, Intelligence, Zen, Base, Locked, Sp
 
 contract DemoEntitySystem is System {
 
-    // Creates a random character for a demo
+    // Creates a random character entity demo
   function createCharacter() public returns (bytes32 id) {
     id = getUniqueEntity();
     Character.set(id, CharacterData({owner: _msgSender(), created: block.timestamp}));

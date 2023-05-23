@@ -24,8 +24,6 @@ const TokenCard = ({}: TTokenCard) => {
     components: { Factory },
   } = useMUD();
 
-  console.log("DEL", playerEntity);
-
   const factoryAddress = useComponentValue(Factory, singletonEntity);
 
   const { getOwnedTokens, transferToken } = useGetNFTData(

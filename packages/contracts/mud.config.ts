@@ -7,7 +7,7 @@ export default mudConfig({
       schema: "uint32",
     },
 
-    // Character Example
+    // Character, an example of a typical game entity
     Character: {
       schema: {
         owner: "address",
@@ -21,16 +21,23 @@ export default mudConfig({
     Special: "string",
     Base: "uint8",
 
-    // Tokenize
+    // Tokenize, locked assets should be blocked from being used
     Locked: "bool",
     Factory: { keySchema: {}, schema: "address" },
 
     // Composable Securities
+    Loan: {
+      keySchema: {},
+      schema: {
+        rate: "uint256",
+        expiry: "uint256",
+      },
+    },
 
     Future: {
       keySchema: {},
       schema: {
-        exists: "bool",
+        price: "uint256",
         expiry: "uint256",
       },
     },
@@ -38,7 +45,6 @@ export default mudConfig({
     Swap: {
       keySchema: {},
       schema: {
-        exists: "bool",
         rate: "uint256",
         index: "address",
         margin: "uint256",
@@ -49,7 +55,6 @@ export default mudConfig({
     Option: {
       keySchema: {},
       schema: {
-        exists: "bool",
         strike: "uint256",
         expiry: "uint256",
       },

@@ -17,24 +17,20 @@ import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
 import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCounter.sol";
 
-bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("Swap")));
-bytes32 constant SwapTableId = _tableId;
+bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("Loan")));
+bytes32 constant LoanTableId = _tableId;
 
-struct SwapData {
+struct LoanData {
   uint256 rate;
-  address index;
-  uint256 margin;
   uint256 expiry;
 }
 
-library Swap {
+library Loan {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](4);
+    SchemaType[] memory _schema = new SchemaType[](2);
     _schema[0] = SchemaType.UINT256;
-    _schema[1] = SchemaType.ADDRESS;
-    _schema[2] = SchemaType.UINT256;
-    _schema[3] = SchemaType.UINT256;
+    _schema[1] = SchemaType.UINT256;
 
     return SchemaLib.encode(_schema);
   }
@@ -47,12 +43,10 @@ library Swap {
 
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
-    string[] memory _fieldNames = new string[](4);
+    string[] memory _fieldNames = new string[](2);
     _fieldNames[0] = "rate";
-    _fieldNames[1] = "index";
-    _fieldNames[2] = "margin";
-    _fieldNames[3] = "expiry";
-    return ("Swap", _fieldNames);
+    _fieldNames[1] = "expiry";
+    return ("Loan", _fieldNames);
   }
 
   /** Register the table's schema */
@@ -107,71 +101,11 @@ library Swap {
     _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((rate)));
   }
 
-  /** Get index */
-  function getIndex() internal view returns (address index) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
-    return (address(Bytes.slice20(_blob, 0)));
-  }
-
-  /** Get index (using the specified store) */
-  function getIndex(IStore _store) internal view returns (address index) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
-    return (address(Bytes.slice20(_blob, 0)));
-  }
-
-  /** Set index */
-  function setIndex(address index) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((index)));
-  }
-
-  /** Set index (using the specified store) */
-  function setIndex(IStore _store, address index) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((index)));
-  }
-
-  /** Get margin */
-  function getMargin() internal view returns (uint256 margin) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
-    return (uint256(Bytes.slice32(_blob, 0)));
-  }
-
-  /** Get margin (using the specified store) */
-  function getMargin(IStore _store) internal view returns (uint256 margin) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
-    return (uint256(Bytes.slice32(_blob, 0)));
-  }
-
-  /** Set margin */
-  function setMargin(uint256 margin) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((margin)));
-  }
-
-  /** Set margin (using the specified store) */
-  function setMargin(IStore _store, uint256 margin) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((margin)));
-  }
-
   /** Get expiry */
   function getExpiry() internal view returns (uint256 expiry) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 3);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -179,7 +113,7 @@ library Swap {
   function getExpiry(IStore _store) internal view returns (uint256 expiry) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes memory _blob = _store.getField(_tableId, _keyTuple, 3);
+    bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -187,18 +121,18 @@ library Swap {
   function setExpiry(uint256 expiry) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _keyTuple, 3, abi.encodePacked((expiry)));
+    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((expiry)));
   }
 
   /** Set expiry (using the specified store) */
   function setExpiry(IStore _store, uint256 expiry) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    _store.setField(_tableId, _keyTuple, 3, abi.encodePacked((expiry)));
+    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((expiry)));
   }
 
   /** Get the full data */
-  function get() internal view returns (SwapData memory _table) {
+  function get() internal view returns (LoanData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     bytes memory _blob = StoreSwitch.getRecord(_tableId, _keyTuple, getSchema());
@@ -206,7 +140,7 @@ library Swap {
   }
 
   /** Get the full data (using the specified store) */
-  function get(IStore _store) internal view returns (SwapData memory _table) {
+  function get(IStore _store) internal view returns (LoanData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
     bytes memory _blob = _store.getRecord(_tableId, _keyTuple, getSchema());
@@ -214,8 +148,8 @@ library Swap {
   }
 
   /** Set the full data using individual values */
-  function set(uint256 rate, address index, uint256 margin, uint256 expiry) internal {
-    bytes memory _data = encode(rate, index, margin, expiry);
+  function set(uint256 rate, uint256 expiry) internal {
+    bytes memory _data = encode(rate, expiry);
 
     bytes32[] memory _keyTuple = new bytes32[](0);
 
@@ -223,8 +157,8 @@ library Swap {
   }
 
   /** Set the full data using individual values (using the specified store) */
-  function set(IStore _store, uint256 rate, address index, uint256 margin, uint256 expiry) internal {
-    bytes memory _data = encode(rate, index, margin, expiry);
+  function set(IStore _store, uint256 rate, uint256 expiry) internal {
+    bytes memory _data = encode(rate, expiry);
 
     bytes32[] memory _keyTuple = new bytes32[](0);
 
@@ -232,29 +166,25 @@ library Swap {
   }
 
   /** Set the full data using the data struct */
-  function set(SwapData memory _table) internal {
-    set(_table.rate, _table.index, _table.margin, _table.expiry);
+  function set(LoanData memory _table) internal {
+    set(_table.rate, _table.expiry);
   }
 
   /** Set the full data using the data struct (using the specified store) */
-  function set(IStore _store, SwapData memory _table) internal {
-    set(_store, _table.rate, _table.index, _table.margin, _table.expiry);
+  function set(IStore _store, LoanData memory _table) internal {
+    set(_store, _table.rate, _table.expiry);
   }
 
   /** Decode the tightly packed blob using this table's schema */
-  function decode(bytes memory _blob) internal pure returns (SwapData memory _table) {
+  function decode(bytes memory _blob) internal pure returns (LoanData memory _table) {
     _table.rate = (uint256(Bytes.slice32(_blob, 0)));
 
-    _table.index = (address(Bytes.slice20(_blob, 32)));
-
-    _table.margin = (uint256(Bytes.slice32(_blob, 52)));
-
-    _table.expiry = (uint256(Bytes.slice32(_blob, 84)));
+    _table.expiry = (uint256(Bytes.slice32(_blob, 32)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint256 rate, address index, uint256 margin, uint256 expiry) internal view returns (bytes memory) {
-    return abi.encodePacked(rate, index, margin, expiry);
+  function encode(uint256 rate, uint256 expiry) internal view returns (bytes memory) {
+    return abi.encodePacked(rate, expiry);
   }
 
   /** Encode keys as a bytes32 array using this table's schema */

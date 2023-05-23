@@ -12,6 +12,7 @@ import { Special, SpecialTableId } from "./tables/Special.sol";
 import { Base, BaseTableId } from "./tables/Base.sol";
 import { Locked, LockedTableId } from "./tables/Locked.sol";
 import { Factory, FactoryTableId } from "./tables/Factory.sol";
+import { Loan, LoanData, LoanTableId } from "./tables/Loan.sol";
 import { Future, FutureData, FutureTableId } from "./tables/Future.sol";
 import { Swap, SwapData, SwapTableId } from "./tables/Swap.sol";
 import { Option, OptionData, OptionTableId } from "./tables/Option.sol";
